@@ -7,10 +7,15 @@ import mero.ai.meroreminder.dto.UpdateReminderRequest;
 import mero.ai.meroreminder.service.ports.inp.ReminderService;
 import mero.ai.meroreminder.repository.ReminderListRepository;
 import mero.ai.meroreminder.repository.ReminderRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
@@ -18,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,6 +31,7 @@ public class DefaultReminderService implements ReminderService {
 
     private final ReminderRepository reminderRepository;
     private final ReminderListRepository reminderListRepository;
+    private final EntityManager entityManager;
 
     @Override
     public List<Reminder> findAll(Long listId, Boolean completed, Boolean flagged, Boolean dueToday, Boolean scheduled, String sort) {
@@ -74,6 +81,15 @@ public class DefaultReminderService implements ReminderService {
     }
 
     @Override
+    public Page<Reminder> findAll(Long listId, Boolean completed, Boolean flagged, Boolean dueToday, Boolean scheduled, String sort, Pageable pageable) {
+        List<Reminder> all = findAll(listId, completed, flagged, dueToday, scheduled, sort);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), all.size());
+        List<Reminder> pageContent = start >= all.size() ? List.of() : all.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, all.size());
+    }
+
+    @Override
     public Reminder findById(Long id) {
         return reminderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reminder not found: " + id));
@@ -82,6 +98,7 @@ public class DefaultReminderService implements ReminderService {
     @Override
     @Transactional
     public Reminder create(String title, Long listId) {
+        log.debug("Creating reminder: title={}, listId={}", title, listId);
         Reminder reminder = new Reminder();
         reminder.setTitle(title);
         if (listId != null) {
@@ -89,12 +106,15 @@ public class DefaultReminderService implements ReminderService {
                     .orElseThrow(() -> new IllegalArgumentException("List not found: " + listId));
             reminder.setReminderList(list);
         }
-        return reminderRepository.save(reminder);
+        Reminder saved = reminderRepository.saveAndFlush(reminder);
+        entityManager.refresh(saved);
+        return saved;
     }
 
     @Override
     @Transactional
     public Reminder update(Long id, UpdateReminderRequest request) {
+        log.debug("Updating reminder: id={}", id);
         Reminder reminder = findById(id);
 
         if (request.title() != null) {
@@ -125,7 +145,9 @@ public class DefaultReminderService implements ReminderService {
             }
         }
 
-        return reminderRepository.save(reminder);
+        Reminder updated = reminderRepository.saveAndFlush(reminder);
+        entityManager.refresh(updated);
+        return updated;
     }
 
     @Override
@@ -141,6 +163,7 @@ public class DefaultReminderService implements ReminderService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.debug("Deleting reminder: id={}", id);
         Reminder reminder = findById(id);
         reminderRepository.delete(reminder);
     }

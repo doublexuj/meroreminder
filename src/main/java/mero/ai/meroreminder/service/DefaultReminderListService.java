@@ -5,11 +5,13 @@ import mero.ai.meroreminder.repository.ReminderListRepository;
 import mero.ai.meroreminder.repository.ReminderRepository;
 import mero.ai.meroreminder.service.ports.inp.ReminderListService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -44,6 +46,7 @@ public class DefaultReminderListService implements ReminderListService {
     @Override
     @Transactional
     public ReminderList create(String name, String color) {
+        log.debug("Creating list: name={}, color={}", name, color);
         ReminderList list = new ReminderList();
         list.setName(name);
         list.setColor(color != null ? color : "BLUE");
@@ -62,6 +65,7 @@ public class DefaultReminderListService implements ReminderListService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.debug("Deleting list: id={}", id);
         ReminderList list = findById(id);
         reminderRepository.deleteByReminderListId(id);
         reminderListRepository.delete(list);

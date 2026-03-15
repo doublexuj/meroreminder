@@ -47,10 +47,9 @@ public class Reminder {
     @com.fasterxml.jackson.annotation.JsonIgnore
     private ReminderList reminderList;
 
+    @Column(name = "list_id", insertable = false, updatable = false)
     @JsonProperty("listId")
-    public Long getListId() {
-        return reminderList != null ? reminderList.getId() : null;
-    }
+    private Long listId;
 
     @Setter
     private boolean completed;

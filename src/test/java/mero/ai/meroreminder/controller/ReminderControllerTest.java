@@ -265,6 +265,25 @@ class ReminderControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @Order(17)
+    @DisplayName("GET /api/reminders?page=0&size=2 — 페이지네이션 지원")
+    void findAllWithPagination() throws Exception {
+        createTestReminder("할일1");
+        createTestReminder("할일2");
+        createTestReminder("할일3");
+
+        mockMvc.perform(get("/api/reminders").param("page", "0").param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.totalElements").value(3))
+                .andExpect(jsonPath("$.totalPages").value(2));
+
+        mockMvc.perform(get("/api/reminders").param("page", "1").param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)));
+    }
+
     private Reminder createTestReminder(String title) {
         Reminder reminder = new Reminder();
         reminder.setTitle(title);
