@@ -41,43 +41,43 @@
 ## Phase 2: Frontend 기본 UI
 
 ### 2.1 프로젝트 초기화
-- [ ] `npx create-next-app@latest frontend` (TypeScript, Tailwind CSS, App Router, src/ 없음)
-- [ ] `lucide-react` 패키지 설치
-- [ ] CSS 변수 정의 — Apple 시스템 컬러 12색 + 배경/텍스트/보더 토큰 (spec.md 3.10)
-- [ ] 글로벌 폰트 설정 (`system-ui, -apple-system, BlinkMacSystemFont`)
+- [x] `npx create-next-app@latest frontend` (TypeScript, Tailwind CSS, App Router, src/ 없음)
+- [x] `lucide-react` 패키지 설치
+- [x] CSS 변수 정의 — Apple 시스템 컬러 12색 + 배경/텍스트/보더 토큰 (spec.md 3.10)
+- [x] 글로벌 폰트 설정 (`system-ui, -apple-system, BlinkMacSystemFont`)
 
 ### 2.2 타입 & API 클라이언트
-- [ ] `types/index.ts` — `Reminder`, `Priority` 타입 정의
-- [ ] `lib/api.ts` — `fetchReminders()` 함수
-- [ ] `lib/api.ts` — `createReminder(title)` 함수
-- [ ] `lib/api.ts` — `toggleReminder(id)` 함수
-- [ ] `lib/api.ts` — `deleteReminder(id)` 함수
+- [x] `types/index.ts` — `Reminder`, `Priority` 타입 정의
+- [x] `lib/api.ts` — `fetchReminders()` 함수
+- [x] `lib/api.ts` — `createReminder(title)` 함수
+- [x] `lib/api.ts` — `toggleReminder(id)` 함수
+- [x] `lib/api.ts` — `deleteReminder(id)` 함수
 
 ### 2.3 레이아웃
-- [ ] `app/layout.tsx` — 글로벌 레이아웃 (폰트, CSS 변수 적용)
-- [ ] `app/page.tsx` — 2컬럼 레이아웃 뼈대 (사이드바 280px + 메인 영역)
+- [x] `app/layout.tsx` — 글로벌 레이아웃 (폰트, CSS 변수 적용)
+- [x] `app/page.tsx` — 2컬럼 레이아웃 뼈대 (사이드바 280px + 메인 영역)
 
 ### 2.4 사이드바 컴포넌트
-- [ ] `components/Sidebar.tsx` — 사이드바 컨테이너 (반투명 배경 + backdrop blur)
-- [ ] "All" 스마트 리스트 항목 하드코딩 (Inbox 아이콘, 카운트 표시)
+- [x] `components/Sidebar.tsx` — 사이드바 컨테이너 (반투명 배경 + backdrop blur)
+- [x] "All" 스마트 리스트 항목 하드코딩 (Inbox 아이콘, 카운트 표시)
 
 ### 2.5 리마인더 목록 컴포넌트
-- [ ] `components/ReminderList.tsx` — 리마인더 목록 렌더링
-- [ ] `components/ReminderItem.tsx` — 개별 리마인더 행 (체크 서클 + 제목)
-- [ ] 체크 서클 클릭 → `toggleReminder()` API 호출
-- [ ] 빈 상태 화면 — 중앙 아이콘 + "No Reminders" 텍스트
+- [x] `components/ReminderList.tsx` — 리마인더 목록 렌더링
+- [x] `components/ReminderItem.tsx` — 개별 리마인더 행 (체크 서클 + 제목)
+- [x] 체크 서클 클릭 → `toggleReminder()` API 호출
+- [x] 빈 상태 화면 — 중앙 아이콘 + "No Reminders" 텍스트
 
 ### 2.6 리마인더 추가
-- [ ] `components/AddReminder.tsx` — "+ Add Reminder" 버튼
-- [ ] 클릭 시 인라인 입력 필드 표시
-- [ ] Enter 키로 `createReminder()` 호출 후 목록 갱신
-- [ ] Escape 키로 입력 취소
+- [x] `components/AddReminder.tsx` — "+ Add Reminder" 버튼
+- [x] 클릭 시 인라인 입력 필드 표시
+- [x] Enter 키로 `createReminder()` 호출 후 목록 갱신
+- [x] Escape 키로 입력 취소
 
 ### 2.7 기본 스타일링
-- [ ] 사이드바 — `rgba(246,246,246,0.8)` 배경, `backdrop-filter: blur(20px)`
-- [ ] 리마인더 행 — 최소 44px 높이, 인덴트 구분선 (`1px solid rgba(0,0,0,0.06)`)
-- [ ] 체크 서클 — 24px, `2px solid #C7C7CC` border, hover 시 연한 fill
-- [ ] 헤더 — 리스트 이름 28px bold
+- [x] 사이드바 — `rgba(246,246,246,0.8)` 배경, `backdrop-filter: blur(20px)`
+- [x] 리마인더 행 — 최소 44px 높이, 인덴트 구분선 (`1px solid rgba(0,0,0,0.06)`)
+- [x] 체크 서클 — 24px, `2px solid #C7C7CC` border, hover 시 연한 fill
+- [x] 헤더 — 리스트 이름 28px bold
 
 ---
 
