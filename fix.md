@@ -43,12 +43,12 @@
 
 ### 버그
 
-- [ ] `ReminderList.tsx` — `prevIdsRef`를 새 ID 발견 여부에 관계없이 항상 업데이트하도록 수정
-- [ ] `page.tsx` `handleToggle` — `setTimeout` race condition 수정 (cleanup 함수, 언마운트 방어)
-- [ ] `page.tsx` `handleDelete` — API 호출을 `setTimeout` 바깥으로 이동, 낙관적 업데이트 구조 개선
-- [ ] `ReminderDetail.tsx` — 날짜/시간 입력 `onChange`에서 API 호출 → `onBlur`로 변경
-- [ ] `ReminderDetail.tsx` — 부모 prop 변경 시 로컬 state 동기화 (`useEffect` 또는 `key` prop 활용)
-- [ ] `ReminderItem.tsx` — `justChecked` state 리셋 로직 추가
+- [x] `ReminderList.tsx` — `prevIdsRef`를 새 ID 발견 여부에 관계없이 항상 업데이트하도록 수정
+- [x] `page.tsx` `handleToggle` — `setTimeout` race condition 수정 (cleanup 함수, 언마운트 방어)
+- [x] `page.tsx` `handleDelete` — API 호출을 `setTimeout` 바깥으로 이동, 낙관적 업데이트 구조 개선
+- [x] `ReminderDetail.tsx` — 날짜/시간 입력 `onChange`에서 API 호출 → `onBlur`로 변경
+- [x] `ReminderDetail.tsx` — 부모 prop 변경 시 로컬 state 동기화 (`useEffect` 또는 `key` prop 활용)
+- [x] `ReminderItem.tsx` — `justChecked` state 리셋 로직 추가
 
 ### 아키텍처/설계
 

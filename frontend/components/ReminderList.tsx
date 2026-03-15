@@ -42,12 +42,12 @@ export default function ReminderList({
         added.add(id);
       }
     });
+    prevIdsRef.current = currentIds;
     if (added.size > 0) {
       setNewIds(added);
       const timer = setTimeout(() => setNewIds(new Set()), 300);
       return () => clearTimeout(timer);
     }
-    prevIdsRef.current = currentIds;
   }, [reminders]);
 
   if (reminders.length === 0) {

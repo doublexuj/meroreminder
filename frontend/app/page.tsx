@@ -124,7 +124,6 @@ export default function Home() {
   };
 
   const handleToggle = async (id: number) => {
-    // Optimistic update
     const original = reminders;
     const target = reminders.find((r) => r.id === id);
     if (!target) return;
@@ -136,20 +135,17 @@ export default function Home() {
       )
     );
 
-    // Animate out after 0.5s delay if completing (and not viewing "completed" list)
     if (!wasCompleted && smartListType !== "completed") {
       setAnimatingOutId(id);
-      setTimeout(() => {
-        setAnimatingOutId(null);
-      }, 800);
     }
 
     try {
       await toggleReminder(id);
-      // Delay refresh to let animation play
-      setTimeout(async () => {
-        await refreshAll();
-      }, wasCompleted ? 0 : 600);
+      if (!wasCompleted && smartListType !== "completed") {
+        await new Promise((r) => setTimeout(r, 500));
+      }
+      setAnimatingOutId(null);
+      await refreshAll();
     } catch {
       setReminders(original);
       setAnimatingOutId(null);
@@ -167,23 +163,20 @@ export default function Home() {
   };
 
   const handleDelete = async (id: number) => {
-    // Optimistic: animate out then remove
-    setDeletingId(id);
     const original = reminders;
+    setDeletingId(id);
 
-    setTimeout(async () => {
-      setReminders((prev) => prev.filter((r) => r.id !== id));
-      setSelectedId(null);
+    try {
+      await deleteReminder(id);
+      await new Promise((r) => setTimeout(r, 300));
       setDeletingId(null);
-
-      try {
-        await deleteReminder(id);
-        await refreshAll();
-      } catch {
-        setReminders(original);
-        showError("Failed to delete reminder");
-      }
-    }, 300);
+      setSelectedId(null);
+      await refreshAll();
+    } catch {
+      setDeletingId(null);
+      setReminders(original);
+      showError("Failed to delete reminder");
+    }
   };
 
   const handleSelect = (id: number) => {

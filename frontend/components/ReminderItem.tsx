@@ -2,7 +2,7 @@
 
 import { Reminder } from "@/types";
 import { Flag } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ReminderItemProps {
   reminder: Reminder;
@@ -26,6 +26,14 @@ export default function ReminderItem({
   onSelect,
 }: ReminderItemProps) {
   const [justChecked, setJustChecked] = useState(false);
+
+  useEffect(() => {
+    if (justChecked) {
+      const timer = setTimeout(() => setJustChecked(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [justChecked]);
+
   const priorityLabel = PRIORITY_LABELS[reminder.priority];
 
   const subInfo: string[] = [];

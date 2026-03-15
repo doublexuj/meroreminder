@@ -2,7 +2,7 @@
 
 import { Reminder, Priority, ReminderListItem } from "@/types";
 import { Flag } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { COLORS } from "./ListModal";
 
 interface ReminderDetailProps {
@@ -32,6 +32,15 @@ export default function ReminderDetail({
   const [priority, setPriority] = useState<Priority>(reminder.priority);
   const [flagged, setFlagged] = useState(reminder.flagged);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  useEffect(() => {
+    setTitle(reminder.title);
+    setMemo(reminder.memo ?? "");
+    setDueDate(reminder.dueDate ?? "");
+    setDueTime(reminder.dueTime?.slice(0, 5) ?? "");
+    setPriority(reminder.priority);
+    setFlagged(reminder.flagged);
+  }, [reminder]);
 
   const save = (fields: Partial<Reminder>) => {
     onUpdate(reminder.id, fields);
@@ -76,18 +85,22 @@ export default function ReminderDetail({
         <input
           type="date"
           value={dueDate}
-          onChange={(e) => {
-            setDueDate(e.target.value);
-            save({ dueDate: e.target.value || null });
+          onChange={(e) => setDueDate(e.target.value)}
+          onBlur={() => {
+            if (dueDate !== (reminder.dueDate ?? "")) {
+              save({ dueDate: dueDate || null });
+            }
           }}
           className="text-[13px] bg-[var(--color-bg-input)] rounded-lg px-3 py-1.5 outline-none"
         />
         <input
           type="time"
           value={dueTime}
-          onChange={(e) => {
-            setDueTime(e.target.value);
-            save({ dueTime: e.target.value || null });
+          onChange={(e) => setDueTime(e.target.value)}
+          onBlur={() => {
+            if (dueTime !== (reminder.dueTime?.slice(0, 5) ?? "")) {
+              save({ dueTime: dueTime || null });
+            }
           }}
           className="text-[13px] bg-[var(--color-bg-input)] rounded-lg px-3 py-1.5 outline-none"
         />
