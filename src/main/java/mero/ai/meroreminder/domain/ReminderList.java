@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class ReminderList {
 
@@ -17,9 +16,12 @@ public class ReminderList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Setter
+    @Column(nullable = false, length = 100)
     private String name;
 
+    @Setter
+    @Column(length = 20)
     private String color;
 
     private LocalDateTime createdAt;

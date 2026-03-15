@@ -28,11 +28,11 @@
 
 ### 설계/아키텍처
 
-- [ ] `@ControllerAdvice` 전역 예외 핸들러 추가 — 적절한 HTTP 상태 코드 및 에러 응답 구조화
-- [ ] 요청 바디를 `Map<String, Object>` 에서 DTO 클래스로 교체 + Bean Validation (`@Valid`, `@NotBlank`, `@Size` 등) 적용
+- [x] `@ControllerAdvice` 전역 예외 핸들러 추가 — 적절한 HTTP 상태 코드 및 에러 응답 구조화
+- [x] 요청 바디를 `Map<String, Object>` 에서 DTO 클래스로 교체 + Bean Validation (`@Valid`, `@NotBlank`, `@Size` 등) 적용
 - [ ] JPA 엔티티 직접 반환 대신 Response DTO 도입 — API 계약과 DB 스키마 분리
-- [ ] 엔티티 `@Setter` 범위 축소 — `id`, `createdAt`, `updatedAt`에 setter 제거
-- [ ] 엔티티 문자열 필드에 `@Column(length = ...)` 제약 추가
+- [x] 엔티티 `@Setter` 범위 축소 — `id`, `createdAt`, `updatedAt`에 setter 제거
+- [x] 엔티티 문자열 필드에 `@Column(length = ...)` 제약 추가
 - [ ] `Reminder.getListId()` — LAZY 프록시 의존 대신 `@Column(insertable = false, updatable = false)` 필드 도입
 - [ ] 서비스/컨트롤러에 로깅 추가
 - [ ] `ddl-auto=update` — 프로덕션 대비 Flyway 또는 Liquibase 마이그레이션 도입 (향후 과제)

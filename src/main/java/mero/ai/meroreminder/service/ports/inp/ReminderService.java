@@ -1,6 +1,7 @@
 package mero.ai.meroreminder.service.ports.inp;
 
 import mero.ai.meroreminder.domain.Reminder;
+import mero.ai.meroreminder.dto.UpdateReminderRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public interface ReminderService {
 
     Reminder create(String title, Long listId);
 
-    Reminder update(Long id, Map<String, Object> fields);
+    Reminder update(Long id, UpdateReminderRequest request);
 
     Reminder toggleComplete(Long id);
 

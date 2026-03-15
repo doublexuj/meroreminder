@@ -1,13 +1,15 @@
 package mero.ai.meroreminder.controller;
 
 import mero.ai.meroreminder.domain.Reminder;
+import mero.ai.meroreminder.dto.CreateReminderRequest;
+import mero.ai.meroreminder.dto.UpdateReminderRequest;
 import mero.ai.meroreminder.service.ports.inp.ReminderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reminders")
@@ -34,15 +36,13 @@ public class ReminderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reminder create(@RequestBody Map<String, Object> body) {
-        String title = (String) body.get("title");
-        Long listId = body.get("listId") != null ? ((Number) body.get("listId")).longValue() : null;
-        return reminderService.create(title, listId);
+    public Reminder create(@Valid @RequestBody CreateReminderRequest request) {
+        return reminderService.create(request.title(), request.listId());
     }
 
     @PutMapping("/{id}")
-    public Reminder update(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        return reminderService.update(id, body);
+    public Reminder update(@PathVariable Long id, @Valid @RequestBody UpdateReminderRequest request) {
+        return reminderService.update(id, request);
     }
 
     @PatchMapping("/{id}/toggle")

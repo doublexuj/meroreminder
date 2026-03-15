@@ -3,6 +3,7 @@ package mero.ai.meroreminder.service;
 import mero.ai.meroreminder.domain.Priority;
 import mero.ai.meroreminder.domain.Reminder;
 import mero.ai.meroreminder.domain.ReminderList;
+import mero.ai.meroreminder.dto.UpdateReminderRequest;
 import mero.ai.meroreminder.service.ports.inp.ReminderService;
 import mero.ai.meroreminder.repository.ReminderListRepository;
 import mero.ai.meroreminder.repository.ReminderRepository;
@@ -81,9 +82,6 @@ public class DefaultReminderService implements ReminderService {
     @Override
     @Transactional
     public Reminder create(String title, Long listId) {
-        if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("Title must not be empty");
-        }
         Reminder reminder = new Reminder();
         reminder.setTitle(title);
         if (listId != null) {
@@ -96,38 +94,34 @@ public class DefaultReminderService implements ReminderService {
 
     @Override
     @Transactional
-    public Reminder update(Long id, Map<String, Object> fields) {
+    public Reminder update(Long id, UpdateReminderRequest request) {
         Reminder reminder = findById(id);
 
-        if (fields.containsKey("title")) {
-            reminder.setTitle((String) fields.get("title"));
+        if (request.title() != null) {
+            reminder.setTitle(request.title());
         }
-        if (fields.containsKey("memo")) {
-            reminder.setMemo((String) fields.get("memo"));
+        if (request.memo() != null) {
+            reminder.setMemo(request.memo().isEmpty() ? null : request.memo());
         }
-        if (fields.containsKey("dueDate")) {
-            String val = (String) fields.get("dueDate");
-            reminder.setDueDate(val != null && !val.isEmpty() ? LocalDate.parse(val) : null);
+        if (request.dueDate() != null) {
+            reminder.setDueDate(request.dueDate().isEmpty() ? null : LocalDate.parse(request.dueDate()));
         }
-        if (fields.containsKey("dueTime")) {
-            String val = (String) fields.get("dueTime");
-            reminder.setDueTime(val != null && !val.isEmpty() ? LocalTime.parse(val) : null);
+        if (request.dueTime() != null) {
+            reminder.setDueTime(request.dueTime().isEmpty() ? null : LocalTime.parse(request.dueTime()));
         }
-        if (fields.containsKey("priority")) {
-            reminder.setPriority(Priority.valueOf((String) fields.get("priority")));
+        if (request.priority() != null) {
+            reminder.setPriority(Priority.valueOf(request.priority()));
         }
-        if (fields.containsKey("flagged")) {
-            reminder.setFlagged((Boolean) fields.get("flagged"));
+        if (request.flagged() != null) {
+            reminder.setFlagged(request.flagged());
         }
-        if (fields.containsKey("listId")) {
-            Object listIdVal = fields.get("listId");
-            if (listIdVal != null) {
-                Long lid = ((Number) listIdVal).longValue();
-                ReminderList list = reminderListRepository.findById(lid)
-                        .orElseThrow(() -> new IllegalArgumentException("List not found: " + lid));
-                reminder.setReminderList(list);
-            } else {
+        if (request.listId() != null) {
+            if (request.listId() == 0) {
                 reminder.setReminderList(null);
+            } else {
+                ReminderList list = reminderListRepository.findById(request.listId())
+                        .orElseThrow(() -> new IllegalArgumentException("List not found: " + request.listId()));
+                reminder.setReminderList(list);
             }
         }
 
