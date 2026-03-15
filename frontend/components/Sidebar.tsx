@@ -1,16 +1,63 @@
 "use client";
 
-import { Inbox, Plus, Pencil, Trash2 } from "lucide-react";
-import { ReminderListItem } from "@/types";
+import { Inbox, CalendarDays, Calendar, Flag, CheckCircle, Plus, Pencil, Trash2 } from "lucide-react";
+import { ReminderListItem, Summary } from "@/types";
 import { COLORS } from "./ListModal";
 import { useState } from "react";
+import type { SmartListType } from "@/app/page";
+
+interface SmartListCard {
+  type: SmartListType;
+  label: string;
+  icon: React.ReactNode;
+  color: string;
+  countKey: keyof Summary;
+}
+
+const SMART_LISTS: SmartListCard[] = [
+  {
+    type: "today",
+    label: "Today",
+    icon: <CalendarDays size={16} className="text-white" />,
+    color: "#007AFF",
+    countKey: "today",
+  },
+  {
+    type: "scheduled",
+    label: "Scheduled",
+    icon: <Calendar size={16} className="text-white" />,
+    color: "#FF3B30",
+    countKey: "scheduled",
+  },
+  {
+    type: "all",
+    label: "All",
+    icon: <Inbox size={16} className="text-white" />,
+    color: "#8E8E93",
+    countKey: "all",
+  },
+  {
+    type: "flagged",
+    label: "Flagged",
+    icon: <Flag size={16} className="text-white" />,
+    color: "#FF9500",
+    countKey: "flagged",
+  },
+  {
+    type: "completed",
+    label: "Completed",
+    icon: <CheckCircle size={16} className="text-white" />,
+    color: "#8E8E93",
+    countKey: "completed",
+  },
+];
 
 interface SidebarProps {
-  allCount: number;
+  summary: Summary;
   lists: ReminderListItem[];
   selectedListId: number | null;
-  isSmartListSelected: boolean;
-  onSelectAll: () => void;
+  selectedSmartList: SmartListType | null;
+  onSelectSmartList: (type: SmartListType) => void;
   onSelectList: (id: number) => void;
   onAddList: () => void;
   onEditList: (list: ReminderListItem) => void;
@@ -18,11 +65,11 @@ interface SidebarProps {
 }
 
 export default function Sidebar({
-  allCount,
+  summary,
   lists,
   selectedListId,
-  isSmartListSelected,
-  onSelectAll,
+  selectedSmartList,
+  onSelectSmartList,
   onSelectList,
   onAddList,
   onEditList,
@@ -38,26 +85,32 @@ export default function Sidebar({
       <div className="p-4 pt-6">
         {/* Smart Lists */}
         <div className="grid grid-cols-2 gap-2">
-          <button
-            onClick={onSelectAll}
-            className={`flex flex-col p-3 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:scale-[1.02] hover:shadow-[0_2px_6px_rgba(0,0,0,0.12)] transition-all duration-150 ${
-              isSmartListSelected
-                ? "bg-[var(--color-bg-selected)]"
-                : "bg-white"
-            }`}
-          >
-            <div className="flex items-center justify-between w-full mb-2">
-              <div className="w-7 h-7 rounded-full bg-[var(--color-system-gray)] flex items-center justify-center">
-                <Inbox size={16} className="text-white" />
+          {SMART_LISTS.map((sl) => (
+            <button
+              key={sl.type}
+              onClick={() => onSelectSmartList(sl.type)}
+              className={`flex flex-col p-3 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:scale-[1.02] hover:shadow-[0_2px_6px_rgba(0,0,0,0.12)] transition-all duration-150 ${
+                selectedSmartList === sl.type
+                  ? "bg-[var(--color-bg-selected)]"
+                  : "bg-white"
+              }`}
+            >
+              <div className="flex items-center justify-between w-full mb-2">
+                <div
+                  className="w-7 h-7 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: sl.color }}
+                >
+                  {sl.icon}
+                </div>
+                <span className="text-2xl font-bold text-[var(--color-text-primary)]">
+                  {summary[sl.countKey]}
+                </span>
               </div>
-              <span className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {allCount}
+              <span className="text-[13px] text-[var(--color-text-secondary)] font-medium text-left">
+                {sl.label}
               </span>
-            </div>
-            <span className="text-[13px] text-[var(--color-text-secondary)] font-medium">
-              All
-            </span>
-          </button>
+            </button>
+          ))}
         </div>
 
         {/* Divider */}

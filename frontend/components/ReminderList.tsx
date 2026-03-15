@@ -9,6 +9,7 @@ interface ReminderListProps {
   reminders: Reminder[];
   selectedId: number | null;
   lists: ReminderListItem[];
+  emptyMessage?: string;
   onToggle: (id: number) => void;
   onSelect: (id: number) => void;
   onUpdate: (id: number, data: Partial<Reminder>) => void;
@@ -19,6 +20,7 @@ export default function ReminderList({
   reminders,
   selectedId,
   lists,
+  emptyMessage = "No Reminders",
   onToggle,
   onSelect,
   onUpdate,
@@ -29,7 +31,7 @@ export default function ReminderList({
       <div className="flex flex-col items-center justify-center flex-1 gap-3">
         <CheckCircle size={48} className="text-[var(--color-text-tertiary)]" />
         <p className="text-[var(--color-text-secondary)] text-base">
-          No Reminders
+          {emptyMessage}
         </p>
       </div>
     );

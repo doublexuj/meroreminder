@@ -165,26 +165,26 @@
 ## Phase 5: 스마트 리스트
 
 ### 5.1 사이드바 — 스마트 리스트 카드 UI
-- [ ] 스마트 리스트 영역 — 2열 그리드 배치
-- [ ] Today 카드 — CalendarDays 아이콘 (Blue #007AFF), 카운트, 라벨
-- [ ] Scheduled 카드 — Calendar 아이콘 (Red #FF3B30), 카운트, 라벨
-- [ ] All 카드 — Inbox 아이콘 (Gray #8E8E93), 카운트, 라벨
-- [ ] Flagged 카드 — Flag 아이콘 (Orange #FF9500), 카운트, 라벨
-- [ ] Completed 카드 — CheckCircle 아이콘 (Gray #8E8E93), 카운트, 라벨
-- [ ] 각 카드 — 원형 아이콘(테마색 배경 + 흰색 아이콘) + 우측 상단 카운트(24px bold) + 하단 라벨(13px gray)
-- [ ] Summary API 호출하여 카운트 실시간 표시
+- [x] 스마트 리스트 영역 — 2열 그리드 배치
+- [x] Today 카드 — CalendarDays 아이콘 (Blue #007AFF), 카운트, 라벨
+- [x] Scheduled 카드 — Calendar 아이콘 (Red #FF3B30), 카운트, 라벨
+- [x] All 카드 — Inbox 아이콘 (Gray #8E8E93), 카운트, 라벨
+- [x] Flagged 카드 — Flag 아이콘 (Orange #FF9500), 카운트, 라벨
+- [x] Completed 카드 — CheckCircle 아이콘 (Gray #8E8E93), 카운트, 라벨
+- [x] 각 카드 — 원형 아이콘(테마색 배경 + 흰색 아이콘) + 우측 상단 카운트(24px bold) + 하단 라벨(13px gray)
+- [x] Summary API 호출하여 카운트 실시간 표시
 
 ### 5.2 스마트 리스트 필터링 연동
-- [ ] Today 클릭 → `fetchReminders({ dueToday: true, completed: false })`
-- [ ] Scheduled 클릭 → `fetchReminders({ scheduled: true, completed: false })`
-- [ ] All 클릭 → `fetchReminders({ completed: false })`
-- [ ] Flagged 클릭 → `fetchReminders({ flagged: true, completed: false })`
-- [ ] Completed 클릭 → `fetchReminders({ completed: true })`
+- [x] Today 클릭 → `fetchReminders({ dueToday: true, completed: false })`
+- [x] Scheduled 클릭 → `fetchReminders({ scheduled: true, completed: false })`
+- [x] All 클릭 → `fetchReminders({ completed: false })`
+- [x] Flagged 클릭 → `fetchReminders({ flagged: true, completed: false })`
+- [x] Completed 클릭 → `fetchReminders({ completed: true })`
 
 ### 5.3 스마트 리스트 메인 영역
-- [ ] 헤더 — 스마트 리스트 이름 (볼드 28px, 테마 색상)
-- [ ] Today 헤더 — 우측에 오늘 날짜 표시
-- [ ] 스마트 리스트별 빈 상태 메시지 (Today → "All Clear for Today")
+- [x] 헤더 — 스마트 리스트 이름 (볼드 28px, 테마 색상)
+- [x] Today 헤더 — 우측에 오늘 날짜 표시
+- [x] 스마트 리스트별 빈 상태 메시지 (Today → "All Clear for Today")
 
 ---
 
