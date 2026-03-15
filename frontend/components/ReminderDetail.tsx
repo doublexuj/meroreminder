@@ -49,7 +49,7 @@ export default function ReminderDetail({
   const currentListId = reminder.listId;
 
   return (
-    <div className="px-4 pl-[52px] pb-4 flex flex-col gap-3">
+    <div className="px-4 pl-[var(--checkbox-area-width)] pb-4 flex flex-col gap-3">
       {/* Title */}
       <label className="sr-only" htmlFor={`title-${reminder.id}`}>Title</label>
       <input

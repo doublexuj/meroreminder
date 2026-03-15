@@ -19,35 +19,35 @@ const SMART_LISTS: SmartListCard[] = [
     type: "today",
     label: "Today",
     icon: <CalendarDays size={16} className="text-white" />,
-    color: "#007AFF",
+    color: "var(--color-system-blue)",
     countKey: "today",
   },
   {
     type: "scheduled",
     label: "Scheduled",
     icon: <Calendar size={16} className="text-white" />,
-    color: "#FF3B30",
+    color: "var(--color-system-red)",
     countKey: "scheduled",
   },
   {
     type: "all",
     label: "All",
     icon: <Inbox size={16} className="text-white" />,
-    color: "#8E8E93",
+    color: "var(--color-system-gray)",
     countKey: "all",
   },
   {
     type: "flagged",
     label: "Flagged",
     icon: <Flag size={16} className="text-white" />,
-    color: "#FF9500",
+    color: "var(--color-system-orange)",
     countKey: "flagged",
   },
   {
     type: "completed",
     label: "Completed",
     icon: <CheckCircle size={16} className="text-white" />,
-    color: "#8E8E93",
+    color: "var(--color-system-gray)",
     countKey: "completed",
   },
 ];
@@ -78,7 +78,7 @@ export default function Sidebar({
   const [contextMenuId, setContextMenuId] = useState<number | null>(null);
 
   return (
-    <aside className="w-[280px] h-screen flex flex-col border-r border-[var(--color-border-strong)] bg-[var(--color-bg-sidebar)] backdrop-blur-[20px] overflow-y-auto">
+    <aside className="w-[var(--sidebar-width)] h-screen flex flex-col border-r border-[var(--color-border-strong)] bg-[var(--color-bg-sidebar)] backdrop-blur-[20px] overflow-y-auto">
       <div className="p-4 pt-6">
         {/* Smart Lists */}
         <div className="grid grid-cols-2 gap-2">
@@ -89,7 +89,7 @@ export default function Sidebar({
               className={`flex flex-col p-3 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:scale-[1.02] hover:shadow-[0_2px_6px_rgba(0,0,0,0.12)] transition-all duration-150 ${
                 selectedSmartList === sl.type
                   ? "bg-[var(--color-bg-selected)]"
-                  : "bg-white"
+                  : "bg-[var(--color-bg-primary)]"
               }`}
             >
               <div className="flex items-center justify-between w-full mb-2">
@@ -157,7 +157,7 @@ export default function Sidebar({
                       className="fixed inset-0 z-40"
                       onClick={() => setContextMenuId(null)}
                     />
-                    <div className="absolute right-0 top-full z-50 bg-white rounded-lg shadow-lg border border-[var(--color-border)] py-1 min-w-[140px]" role="menu">
+                    <div className="absolute right-0 top-full z-50 bg-[var(--color-bg-primary)] rounded-lg shadow-lg border border-[var(--color-border)] py-1 min-w-[140px]" role="menu">
                       <button
                         role="menuitem"
                         onClick={() => {

@@ -59,7 +59,7 @@ export default function ListModal({
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-[14px] shadow-xl w-[360px] p-6 flex flex-col items-center gap-5">
+      <div className="relative bg-[var(--color-bg-primary)] rounded-[14px] shadow-xl w-[360px] p-6 flex flex-col items-center gap-5">
         {/* Icon Preview */}
         <div
           className="w-14 h-14 rounded-full flex items-center justify-center"

@@ -16,11 +16,11 @@ import { Menu } from "lucide-react";
 export type { SmartListType } from "@/types";
 
 const SMART_LIST_CONFIG: Record<SmartListType, { label: string; color: string; emptyMessage: string }> = {
-  today: { label: "Today", color: "#007AFF", emptyMessage: "All Clear for Today" },
-  scheduled: { label: "Scheduled", color: "#FF3B30", emptyMessage: "No Scheduled Reminders" },
-  all: { label: "All", color: "#8E8E93", emptyMessage: "No Reminders" },
-  flagged: { label: "Flagged", color: "#FF9500", emptyMessage: "No Flagged Reminders" },
-  completed: { label: "Completed", color: "#8E8E93", emptyMessage: "No Completed Reminders" },
+  today: { label: "Today", color: "var(--color-system-blue)", emptyMessage: "All Clear for Today" },
+  scheduled: { label: "Scheduled", color: "var(--color-system-red)", emptyMessage: "No Scheduled Reminders" },
+  all: { label: "All", color: "var(--color-system-gray)", emptyMessage: "No Reminders" },
+  flagged: { label: "Flagged", color: "var(--color-system-orange)", emptyMessage: "No Flagged Reminders" },
+  completed: { label: "Completed", color: "var(--color-system-gray)", emptyMessage: "No Completed Reminders" },
 };
 
 export default function Home() {

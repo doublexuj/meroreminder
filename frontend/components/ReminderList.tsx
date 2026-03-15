@@ -89,7 +89,7 @@ export default function ReminderList({
             </div>
           )}
           {index < reminders.length - 1 && (
-            <div className="ml-[52px] h-px bg-[var(--color-border)]" />
+            <div className="ml-[var(--checkbox-area-width)] h-px bg-[var(--color-border)]" />
           )}
         </div>
       ))}

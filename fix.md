@@ -78,6 +78,6 @@
 
 ### CSS/테마
 
-- [ ] `bg-white` 하드코딩 → `bg-[var(--color-bg-primary)]`로 교체 (Sidebar, ListModal, 컨텍스트 메뉴)
-- [ ] 스마트 리스트 카드/설정 내 hex 직접 사용 → CSS 변수 참조로 통일
-- [ ] 매직넘버 픽셀값 (`pl-[52px]`, `w-[280px]` 등) → 공유 상수 또는 CSS 변수로 정의
+- [x] `bg-white` 하드코딩 → `bg-[var(--color-bg-primary)]`로 교체 (Sidebar, ListModal, 컨텍스트 메뉴)
+- [x] 스마트 리스트 카드/설정 내 hex 직접 사용 → CSS 변수 참조로 통일
+- [x] 매직넘버 픽셀값 (`pl-[52px]`, `w-[280px]` 등) → 공유 상수 또는 CSS 변수로 정의
