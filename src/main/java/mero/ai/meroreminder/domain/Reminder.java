@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -20,7 +22,20 @@ public class Reminder {
     @Column(nullable = false)
     private String title;
 
+    private String memo;
+
+    private LocalDate dueDate;
+
+    private LocalTime dueTime;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority = Priority.NONE;
+
+    private boolean flagged;
+
     private boolean completed;
+
+    private LocalDateTime completedAt;
 
     private LocalDateTime createdAt;
 

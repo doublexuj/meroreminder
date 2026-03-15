@@ -2,13 +2,20 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Reminder } from "@/types";
-import { fetchReminders, createReminder, toggleReminder } from "@/lib/api";
+import {
+  fetchReminders,
+  createReminder,
+  updateReminder,
+  toggleReminder,
+  deleteReminder,
+} from "@/lib/api";
 import Sidebar from "@/components/Sidebar";
 import ReminderList from "@/components/ReminderList";
 import AddReminder from "@/components/AddReminder";
 
 export default function Home() {
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const loadReminders = useCallback(async () => {
     try {
@@ -41,6 +48,29 @@ export default function Home() {
     }
   };
 
+  const handleUpdate = async (id: number, data: Partial<Reminder>) => {
+    try {
+      await updateReminder(id, data);
+      await loadReminders();
+    } catch (error) {
+      console.error("Failed to update reminder:", error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteReminder(id);
+      setSelectedId(null);
+      await loadReminders();
+    } catch (error) {
+      console.error("Failed to delete reminder:", error);
+    }
+  };
+
+  const handleSelect = (id: number) => {
+    setSelectedId(selectedId === id ? null : id);
+  };
+
   const incompleteCount = reminders.filter((r) => !r.completed).length;
 
   return (
@@ -59,7 +89,11 @@ export default function Home() {
         <div className="flex-1 flex flex-col">
           <ReminderList
             reminders={reminders}
+            selectedId={selectedId}
             onToggle={handleToggle}
+            onSelect={handleSelect}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
           />
         </div>
 

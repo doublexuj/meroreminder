@@ -17,8 +17,13 @@ public class ReminderController {
     private final ReminderService reminderService;
 
     @GetMapping
-    public List<Reminder> findAll() {
-        return reminderService.findAll();
+    public List<Reminder> findAll(
+            @RequestParam(required = false) Boolean completed,
+            @RequestParam(required = false) Boolean flagged,
+            @RequestParam(required = false) Boolean dueToday,
+            @RequestParam(required = false) Boolean scheduled,
+            @RequestParam(required = false) String sort) {
+        return reminderService.findAll(completed, flagged, dueToday, scheduled, sort);
     }
 
     @GetMapping("/{id}")
@@ -33,8 +38,8 @@ public class ReminderController {
     }
 
     @PutMapping("/{id}")
-    public Reminder update(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        return reminderService.update(id, body.get("title"));
+    public Reminder update(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        return reminderService.update(id, body);
     }
 
     @PatchMapping("/{id}/toggle")

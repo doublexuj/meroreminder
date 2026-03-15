@@ -84,38 +84,38 @@
 ## Phase 3: Reminder 상세 필드 추가
 
 ### 3.1 Backend 엔티티 확장
-- [ ] `Reminder` 엔티티에 필드 추가: `memo`, `dueDate`, `dueTime`, `priority`, `flagged`, `completedAt`
-- [ ] `ReminderRepository` — 쿼리 메서드 추가 (completed, flagged, dueDate 필터)
-- [ ] `ReminderService` — 필터링 로직 (completed, flagged, dueToday, scheduled 파라미터)
-- [ ] `ReminderService` — 정렬 로직 (dueDate, priority, createdAt)
-- [ ] `ReminderController` — `GET /api/reminders` 쿼리 파라미터 처리
+- [x] `Reminder` 엔티티에 필드 추가: `memo`, `dueDate`, `dueTime`, `priority`, `flagged`, `completedAt`
+- [x] `ReminderRepository` — 쿼리 메서드 추가 (completed, flagged, dueDate 필터)
+- [x] `ReminderService` — 필터링 로직 (completed, flagged, dueToday, scheduled 파라미터)
+- [x] `ReminderService` — 정렬 로직 (dueDate, priority, createdAt)
+- [x] `ReminderController` — `GET /api/reminders` 쿼리 파라미터 처리
 
 ### 3.2 Summary API
-- [ ] `SummaryController.java` — `GET /api/summary`
-- [ ] 응답: `{ today, scheduled, all, flagged, completed }` 카운트
+- [x] `SummaryController.java` — `GET /api/summary`
+- [x] 응답: `{ today, scheduled, all, flagged, completed }` 카운트
 
 ### 3.3 Frontend 타입 & API 확장
-- [ ] `types/index.ts` — Reminder 타입에 memo, dueDate, dueTime, priority, flagged 추가
-- [ ] `lib/api.ts` — `updateReminder(id, data)` 함수
-- [ ] `lib/api.ts` — `fetchSummary()` 함수
+- [x] `types/index.ts` — Reminder 타입에 memo, dueDate, dueTime, priority, flagged 추가
+- [x] `lib/api.ts` — `updateReminder(id, data)` 함수
+- [x] `lib/api.ts` — `fetchSummary()` 함수
 
 ### 3.4 인라인 상세 편집 UI
-- [ ] `components/ReminderDetail.tsx` — 확장 편집 영역 컨테이너
-- [ ] 리마인더 행 클릭 → 해당 행 아래로 확장 (편집 필드 노출)
-- [ ] 제목 편집 — borderless input, 기존 제목 표시
-- [ ] 메모 입력 — textarea, placeholder "Add Note"
-- [ ] 마감일 선택 — `<input type="date">`, 라운드 배경
-- [ ] 마감시간 선택 — `<input type="time">`, 라운드 배경
-- [ ] 우선순위 세그먼트 컨트롤 — 4버튼 (없음 / ! / !! / !!!), 선택 시 파란 배경
-- [ ] 플래그 토글 — 깃발 아이콘 버튼
-- [ ] 삭제 버튼 — 빨간색 "Delete Reminder", 클릭 시 확인 다이얼로그
-- [ ] 변경사항 자동 저장 (blur 또는 debounce로 `updateReminder()` 호출)
+- [x] `components/ReminderDetail.tsx` — 확장 편집 영역 컨테이너
+- [x] 리마인더 행 클릭 → 해당 행 아래로 확장 (편집 필드 노출)
+- [x] 제목 편집 — borderless input, 기존 제목 표시
+- [x] 메모 입력 — textarea, placeholder "Add Note"
+- [x] 마감일 선택 — `<input type="date">`, 라운드 배경
+- [x] 마감시간 선택 — `<input type="time">`, 라운드 배경
+- [x] 우선순위 세그먼트 컨트롤 — 4버튼 (없음 / ! / !! / !!!), 선택 시 파란 배경
+- [x] 플래그 토글 — 깃발 아이콘 버튼
+- [x] 삭제 버튼 — 빨간색 "Delete Reminder", 클릭 시 확인 다이얼로그
+- [x] 변경사항 자동 저장 (blur 또는 debounce로 `updateReminder()` 호출)
 
 ### 3.5 목록 표시 강화
-- [ ] 제목 아래 부가정보 행 — 메모 미리보기 (1줄, 말줄임), 마감일/시간
-- [ ] 우선순위 표시 — 제목 앞에 `!`/`!!`/`!!!` (리스트 테마 색상)
-- [ ] 플래그 아이콘 — 행 우측 주황색 깃발 (`#FF9500`)
-- [ ] 완료 상태 — 제목 취소선 + 색상 `#8E8E93`
+- [x] 제목 아래 부가정보 행 — 메모 미리보기 (1줄, 말줄임), 마감일/시간
+- [x] 우선순위 표시 — 제목 앞에 `!`/`!!`/`!!!` (리스트 테마 색상)
+- [x] 플래그 아이콘 — 행 우측 주황색 깃발 (`#FF9500`)
+- [x] 완료 상태 — 제목 취소선 + 색상 `#8E8E93`
 
 ---
 
