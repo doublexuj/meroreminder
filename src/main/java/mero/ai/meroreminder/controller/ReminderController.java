@@ -1,7 +1,7 @@
 package mero.ai.meroreminder.controller;
 
 import mero.ai.meroreminder.domain.Reminder;
-import mero.ai.meroreminder.service.ReminderService;
+import mero.ai.meroreminder.service.ports.inp.ReminderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
