@@ -20,16 +20,16 @@ public class DefaultReminderListService implements ReminderListService {
 
     @Override
     public List<Map<String, Object>> findAllWithCount() {
-        List<ReminderList> lists = reminderListRepository.findAll();
+        List<Object[]> rows = reminderListRepository.findAllWithIncompleteCount();
         List<Map<String, Object>> result = new ArrayList<>();
-        for (ReminderList list : lists) {
+        for (Object[] row : rows) {
             Map<String, Object> map = new LinkedHashMap<>();
-            map.put("id", list.getId());
-            map.put("name", list.getName());
-            map.put("color", list.getColor());
-            map.put("count", reminderRepository.countByReminderListIdAndCompleted(list.getId(), false));
-            map.put("createdAt", list.getCreatedAt());
-            map.put("updatedAt", list.getUpdatedAt());
+            map.put("id", row[0]);
+            map.put("name", row[1]);
+            map.put("color", row[2]);
+            map.put("createdAt", row[3]);
+            map.put("updatedAt", row[4]);
+            map.put("count", row[5]);
             result.add(map);
         }
         return result;

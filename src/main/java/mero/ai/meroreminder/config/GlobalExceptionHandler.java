@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ClassCastException.class)
     public ResponseEntity<Map<String, String>> handleClassCast(ClassCastException e) {
-        return ResponseEntity.badRequest()
-                .body(Map.of("error", "Invalid field type in request body"));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Internal type conversion error"));
     }
 }

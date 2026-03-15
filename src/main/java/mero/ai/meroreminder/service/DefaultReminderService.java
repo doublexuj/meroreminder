@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Sort;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -46,13 +48,25 @@ public class DefaultReminderService implements ReminderService {
         }
 
         if (sort != null) {
-            Comparator<Reminder> comparator = switch (sort) {
-                case "dueDate" -> Comparator.comparing(Reminder::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()));
-                case "priority" -> Comparator.comparing(Reminder::getPriority, Comparator.reverseOrder());
-                default -> Comparator.comparing(Reminder::getCreatedAt);
+            Sort dbSort = switch (sort) {
+                case "dueDate" -> Sort.by(Sort.Order.asc("dueDate").nullsLast());
+                case "priority" -> Sort.by(Sort.Order.desc("priority"));
+                default -> Sort.by(Sort.Order.asc("createdAt"));
             };
             results = new ArrayList<>(results);
-            results.sort(comparator);
+            // Re-fetch with sort when no specific filter was applied
+            if (listId == null && completed == null && !Boolean.TRUE.equals(dueToday)
+                    && !Boolean.TRUE.equals(scheduled) && !Boolean.TRUE.equals(flagged)) {
+                results = reminderRepository.findAll(dbSort);
+            } else {
+                // For filtered queries, sort in memory as Spring Data derived queries don't accept Sort
+                Comparator<Reminder> comparator = switch (sort) {
+                    case "dueDate" -> Comparator.comparing(Reminder::getDueDate, Comparator.nullsLast(Comparator.naturalOrder()));
+                    case "priority" -> Comparator.comparing(Reminder::getPriority, Comparator.reverseOrder());
+                    default -> Comparator.comparing(Reminder::getCreatedAt);
+                };
+                results.sort(comparator);
+            }
         }
 
         return results;
@@ -139,13 +153,14 @@ public class DefaultReminderService implements ReminderService {
 
     @Override
     public Map<String, Long> getSummary() {
-        LocalDate today = LocalDate.now();
+        List<Object[]> rows = reminderRepository.getSummaryCounts(LocalDate.now());
+        Object[] counts = rows.get(0);
         Map<String, Long> summary = new LinkedHashMap<>();
-        summary.put("today", reminderRepository.countByDueDateAndCompleted(today, false));
-        summary.put("scheduled", reminderRepository.countByDueDateNotNullAndCompleted(false));
-        summary.put("all", reminderRepository.countByCompleted(false));
-        summary.put("flagged", reminderRepository.countByFlaggedAndCompleted(true, false));
-        summary.put("completed", reminderRepository.countByCompleted(true));
+        summary.put("today", ((Number) counts[0]).longValue());
+        summary.put("scheduled", ((Number) counts[1]).longValue());
+        summary.put("all", ((Number) counts[2]).longValue());
+        summary.put("flagged", ((Number) counts[3]).longValue());
+        summary.put("completed", ((Number) counts[4]).longValue());
         return summary;
     }
 }

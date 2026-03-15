@@ -21,10 +21,10 @@
 
 ### 성능
 
-- [ ] `DefaultReminderListService.findAllWithCount()` — N+1 쿼리를 단일 JOIN + GROUP BY 쿼리로 교체
-- [ ] `DefaultReminderService.findAll()` — 메모리 내 정렬을 DB `ORDER BY`로 변경
+- [x] `DefaultReminderListService.findAllWithCount()` — N+1 쿼리를 단일 JOIN + GROUP BY 쿼리로 교체
+- [x] `DefaultReminderService.findAll()` — 메모리 내 정렬을 DB `ORDER BY`로 변경
 - [ ] 리마인더 목록 조회에 페이지네이션(`Pageable`) 지원 추가
-- [ ] `DefaultReminderService.getSummary()` — 5개 개별 count 쿼리를 단일 쿼리로 통합
+- [x] `DefaultReminderService.getSummary()` — 5개 개별 count 쿼리를 단일 쿼리로 통합
 
 ### 설계/아키텍처
 
