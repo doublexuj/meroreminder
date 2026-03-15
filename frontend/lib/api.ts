@@ -1,22 +1,33 @@
 import { Reminder, ReminderListItem, Summary } from "@/types";
 
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080/api";
 
 async function request<T>(
   path: string,
   options?: RequestInit
 ): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...options,
-  });
+  const res = await fetch(`${API_BASE}${path}`, options);
   if (!res.ok) {
     throw new Error(`API error: ${res.status}`);
   }
-  if (res.status === 204) {
-    return undefined as T;
-  }
   return res.json();
+}
+
+async function requestVoid(
+  path: string,
+  options?: RequestInit
+): Promise<void> {
+  const res = await fetch(`${API_BASE}${path}`, options);
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status}`);
+  }
+}
+
+function jsonBody(data: unknown): RequestInit {
+  return {
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
 }
 
 // Reminders
@@ -35,7 +46,7 @@ export function createReminder(
 ): Promise<Reminder> {
   return request<Reminder>("/reminders", {
     method: "POST",
-    body: JSON.stringify({ title, listId }),
+    ...jsonBody({ title, listId }),
   });
 }
 
@@ -45,7 +56,7 @@ export function updateReminder(
 ): Promise<Reminder> {
   return request<Reminder>(`/reminders/${id}`, {
     method: "PUT",
-    body: JSON.stringify(data),
+    ...jsonBody(data),
   });
 }
 
@@ -56,7 +67,7 @@ export function toggleReminder(id: number): Promise<Reminder> {
 }
 
 export function deleteReminder(id: number): Promise<void> {
-  return request<void>(`/reminders/${id}`, {
+  return requestVoid(`/reminders/${id}`, {
     method: "DELETE",
   });
 }
@@ -72,7 +83,7 @@ export function createList(
 ): Promise<ReminderListItem> {
   return request<ReminderListItem>("/lists", {
     method: "POST",
-    body: JSON.stringify({ name, color }),
+    ...jsonBody({ name, color }),
   });
 }
 
@@ -83,12 +94,12 @@ export function updateList(
 ): Promise<ReminderListItem> {
   return request<ReminderListItem>(`/lists/${id}`, {
     method: "PUT",
-    body: JSON.stringify({ name, color }),
+    ...jsonBody({ name, color }),
   });
 }
 
 export function deleteList(id: number): Promise<void> {
-  return request<void>(`/lists/${id}`, {
+  return requestVoid(`/lists/${id}`, {
     method: "DELETE",
   });
 }

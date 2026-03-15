@@ -31,3 +31,9 @@ export interface Summary {
   flagged: number;
   completed: number;
 }
+
+export type SmartListType = "all" | "today" | "scheduled" | "flagged" | "completed";
+
+export type ListSelection =
+  | { kind: "smart"; smartListType: SmartListType }
+  | { kind: "custom"; listId: number };

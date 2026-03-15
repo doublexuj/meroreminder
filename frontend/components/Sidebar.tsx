@@ -2,9 +2,9 @@
 
 import { Inbox, CalendarDays, Calendar, Flag, CheckCircle, Plus, Pencil, Trash2 } from "lucide-react";
 import { ReminderListItem, Summary } from "@/types";
-import { COLORS } from "./ListModal";
+import { getColorHex } from "@/lib/colors";
 import { useState } from "react";
-import type { SmartListType } from "@/app/page";
+import type { SmartListType } from "@/types";
 
 interface SmartListCard {
   type: SmartListType;
@@ -76,9 +76,6 @@ export default function Sidebar({
   onDeleteList,
 }: SidebarProps) {
   const [contextMenuId, setContextMenuId] = useState<number | null>(null);
-
-  const getColorHex = (colorName: string) =>
-    COLORS.find((c) => c.name === colorName)?.hex ?? "#8E8E93";
 
   return (
     <aside className="w-[280px] h-screen flex flex-col border-r border-[var(--color-border-strong)] bg-[var(--color-bg-sidebar)] backdrop-blur-[20px] overflow-y-auto">

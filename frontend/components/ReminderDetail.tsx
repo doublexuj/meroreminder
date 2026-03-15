@@ -3,7 +3,7 @@
 import { Reminder, Priority, ReminderListItem } from "@/types";
 import { Flag } from "lucide-react";
 import { useState, useEffect } from "react";
-import { COLORS } from "./ListModal";
+import { getColorHex } from "@/lib/colors";
 
 interface ReminderDetailProps {
   reminder: Reminder;
@@ -45,9 +45,6 @@ export default function ReminderDetail({
   const save = (fields: Partial<Reminder>) => {
     onUpdate(reminder.id, fields);
   };
-
-  const getColorHex = (colorName: string) =>
-    COLORS.find((c) => c.name === colorName)?.hex ?? "#8E8E93";
 
   const currentListId = reminder.listId;
 

@@ -52,13 +52,13 @@
 
 ### 아키텍처/설계
 
-- [ ] `page.tsx` God Component 분리 — `useReminders`, `useLists` 등 커스텀 훅 추출 또는 `useReducer` 적용
-- [ ] `isSmartListSelected` + `smartListType` + `selectedListId` → discriminated union 단일 state로 통합
-- [ ] `COLORS` 상수를 `ListModal.tsx`에서 `lib/colors.ts`로 분리
-- [ ] `api.ts` — API base URL을 환경변수(`NEXT_PUBLIC_API_BASE`)로 변경
-- [ ] `api.ts` — GET 요청에 불필요한 `Content-Type: application/json` 헤더 제거
-- [ ] `api.ts` — `undefined as T` 타입 캐스팅 제거, void 반환 엔드포인트 별도 처리
-- [ ] React Error Boundary 추가
+- [x] `page.tsx` God Component 분리 — `useReminders`, `useLists` 등 커스텀 훅 추출 또는 `useReducer` 적용
+- [x] `isSmartListSelected` + `smartListType` + `selectedListId` → discriminated union 단일 state로 통합
+- [x] `COLORS` 상수를 `ListModal.tsx`에서 `lib/colors.ts`로 분리
+- [x] `api.ts` — API base URL을 환경변수(`NEXT_PUBLIC_API_BASE`)로 변경
+- [x] `api.ts` — GET 요청에 불필요한 `Content-Type: application/json` 헤더 제거
+- [x] `api.ts` — `undefined as T` 타입 캐스팅 제거, void 반환 엔드포인트 별도 처리
+- [x] React Error Boundary 추가
 
 ### 접근성 (A11y)
 
