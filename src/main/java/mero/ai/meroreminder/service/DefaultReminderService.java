@@ -2,7 +2,9 @@ package mero.ai.meroreminder.service;
 
 import mero.ai.meroreminder.domain.Priority;
 import mero.ai.meroreminder.domain.Reminder;
+import mero.ai.meroreminder.domain.ReminderList;
 import mero.ai.meroreminder.service.ports.inp.ReminderService;
+import mero.ai.meroreminder.repository.ReminderListRepository;
 import mero.ai.meroreminder.repository.ReminderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,19 @@ import java.util.*;
 public class DefaultReminderService implements ReminderService {
 
     private final ReminderRepository reminderRepository;
+    private final ReminderListRepository reminderListRepository;
 
     @Override
-    public List<Reminder> findAll(Boolean completed, Boolean flagged, Boolean dueToday, Boolean scheduled, String sort) {
+    public List<Reminder> findAll(Long listId, Boolean completed, Boolean flagged, Boolean dueToday, Boolean scheduled, String sort) {
         List<Reminder> results;
 
-        if (Boolean.TRUE.equals(dueToday)) {
+        if (listId != null) {
+            if (completed != null) {
+                results = reminderRepository.findByReminderListIdAndCompleted(listId, completed);
+            } else {
+                results = reminderRepository.findByReminderListId(listId);
+            }
+        } else if (Boolean.TRUE.equals(dueToday)) {
             results = reminderRepository.findByDueDateAndCompleted(LocalDate.now(), false);
         } else if (Boolean.TRUE.equals(scheduled)) {
             results = reminderRepository.findByDueDateNotNullAndCompleted(false);
@@ -57,9 +66,14 @@ public class DefaultReminderService implements ReminderService {
 
     @Override
     @Transactional
-    public Reminder create(String title) {
+    public Reminder create(String title, Long listId) {
         Reminder reminder = new Reminder();
         reminder.setTitle(title);
+        if (listId != null) {
+            ReminderList list = reminderListRepository.findById(listId)
+                    .orElseThrow(() -> new IllegalArgumentException("List not found: " + listId));
+            reminder.setReminderList(list);
+        }
         return reminderRepository.save(reminder);
     }
 
@@ -87,6 +101,17 @@ public class DefaultReminderService implements ReminderService {
         }
         if (fields.containsKey("flagged")) {
             reminder.setFlagged((Boolean) fields.get("flagged"));
+        }
+        if (fields.containsKey("listId")) {
+            Object listIdVal = fields.get("listId");
+            if (listIdVal != null) {
+                Long lid = ((Number) listIdVal).longValue();
+                ReminderList list = reminderListRepository.findById(lid)
+                        .orElseThrow(() -> new IllegalArgumentException("List not found: " + lid));
+                reminder.setReminderList(list);
+            } else {
+                reminder.setReminderList(null);
+            }
         }
 
         return reminderRepository.save(reminder);

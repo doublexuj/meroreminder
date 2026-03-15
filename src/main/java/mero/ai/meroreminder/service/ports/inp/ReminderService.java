@@ -7,11 +7,11 @@ import java.util.Map;
 
 public interface ReminderService {
 
-    List<Reminder> findAll(Boolean completed, Boolean flagged, Boolean dueToday, Boolean scheduled, String sort);
+    List<Reminder> findAll(Long listId, Boolean completed, Boolean flagged, Boolean dueToday, Boolean scheduled, String sort);
 
     Reminder findById(Long id);
 
-    Reminder create(String title);
+    Reminder create(String title, Long listId);
 
     Reminder update(Long id, Map<String, Object> fields);
 

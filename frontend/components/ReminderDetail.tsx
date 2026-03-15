@@ -1,11 +1,13 @@
 "use client";
 
-import { Reminder, Priority } from "@/types";
+import { Reminder, Priority, ReminderListItem } from "@/types";
 import { Flag } from "lucide-react";
 import { useState } from "react";
+import { COLORS } from "./ListModal";
 
 interface ReminderDetailProps {
   reminder: Reminder;
+  lists: ReminderListItem[];
   onUpdate: (id: number, data: Partial<Reminder>) => void;
   onDelete: (id: number) => void;
 }
@@ -19,6 +21,7 @@ const PRIORITIES: { label: string; value: Priority }[] = [
 
 export default function ReminderDetail({
   reminder,
+  lists,
   onUpdate,
   onDelete,
 }: ReminderDetailProps) {
@@ -33,6 +36,11 @@ export default function ReminderDetail({
   const save = (fields: Partial<Reminder>) => {
     onUpdate(reminder.id, fields);
   };
+
+  const getColorHex = (colorName: string) =>
+    COLORS.find((c) => c.name === colorName)?.hex ?? "#8E8E93";
+
+  const currentListId = reminder.listId;
 
   return (
     <div className="px-4 pl-[52px] pb-4 flex flex-col gap-3">
@@ -104,6 +112,38 @@ export default function ReminderDetail({
           </button>
         ))}
       </div>
+
+      {/* List Selection */}
+      {lists.length > 0 && (
+        <div className="flex items-center gap-2">
+          <span className="text-[13px] text-[var(--color-text-secondary)]">List:</span>
+          <select
+            value={currentListId ?? ""}
+            onChange={(e) => {
+              const val = e.target.value;
+              save({ listId: val ? Number(val) : null } as Partial<Reminder>);
+            }}
+            className="text-[13px] bg-[var(--color-bg-input)] rounded-lg px-2 py-1.5 outline-none"
+          >
+            <option value="">None</option>
+            {lists.map((list) => (
+              <option key={list.id} value={list.id}>
+                {list.name}
+              </option>
+            ))}
+          </select>
+          {currentListId && (
+            <div
+              className="w-2.5 h-2.5 rounded-full"
+              style={{
+                backgroundColor: getColorHex(
+                  lists.find((l) => l.id === currentListId)?.color ?? ""
+                ),
+              }}
+            />
+          )}
+        </div>
+      )}
 
       {/* Flag & Delete */}
       <div className="flex items-center justify-between">

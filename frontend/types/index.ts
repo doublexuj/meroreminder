@@ -10,6 +10,16 @@ export interface Reminder {
   flagged: boolean;
   completed: boolean;
   completedAt: string | null;
+  listId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReminderListItem {
+  id: number;
+  name: string;
+  color: string;
+  count: number;
   createdAt: string;
   updatedAt: string;
 }

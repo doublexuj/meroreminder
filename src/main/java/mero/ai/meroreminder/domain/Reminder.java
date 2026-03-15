@@ -1,5 +1,6 @@
 package mero.ai.meroreminder.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,16 @@ public class Reminder {
     private Priority priority = Priority.NONE;
 
     private boolean flagged;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "list_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private ReminderList reminderList;
+
+    @JsonProperty("listId")
+    public Long getListId() {
+        return reminderList != null ? reminderList.getId() : null;
+    }
 
     private boolean completed;
 

@@ -23,4 +23,12 @@ public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     long countByDueDateAndCompleted(LocalDate dueDate, boolean completed);
 
     long countByDueDateNotNullAndCompleted(boolean completed);
+
+    List<Reminder> findByReminderListId(Long listId);
+
+    List<Reminder> findByReminderListIdAndCompleted(Long listId, boolean completed);
+
+    long countByReminderListIdAndCompleted(Long listId, boolean completed);
+
+    void deleteByReminderListId(Long listId);
 }

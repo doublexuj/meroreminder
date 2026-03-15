@@ -1,6 +1,6 @@
 "use client";
 
-import { Reminder } from "@/types";
+import { Reminder, ReminderListItem } from "@/types";
 import ReminderItem from "./ReminderItem";
 import ReminderDetail from "./ReminderDetail";
 import { CheckCircle } from "lucide-react";
@@ -8,6 +8,7 @@ import { CheckCircle } from "lucide-react";
 interface ReminderListProps {
   reminders: Reminder[];
   selectedId: number | null;
+  lists: ReminderListItem[];
   onToggle: (id: number) => void;
   onSelect: (id: number) => void;
   onUpdate: (id: number, data: Partial<Reminder>) => void;
@@ -17,6 +18,7 @@ interface ReminderListProps {
 export default function ReminderList({
   reminders,
   selectedId,
+  lists,
   onToggle,
   onSelect,
   onUpdate,
@@ -48,6 +50,7 @@ export default function ReminderList({
             <div className="overflow-hidden transition-all duration-250 ease-in-out">
               <ReminderDetail
                 reminder={reminder}
+                lists={lists}
                 onUpdate={onUpdate}
                 onDelete={onDelete}
               />

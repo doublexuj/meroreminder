@@ -122,43 +122,43 @@
 ## Phase 4: 리스트 (List) 기능
 
 ### 4.1 Backend — ReminderList CRUD
-- [ ] `ReminderList.java` 엔티티 (id, name, color, createdAt, updatedAt)
-- [ ] `ReminderListRepository.java`
-- [ ] `ReminderListService.java` — CRUD + 미완료 카운트 조회
-- [ ] `ReminderListController.java` — `GET /api/lists` (카운트 포함)
-- [ ] `ReminderListController.java` — `POST /api/lists`
-- [ ] `ReminderListController.java` — `PUT /api/lists/{id}`
-- [ ] `ReminderListController.java` — `DELETE /api/lists/{id}` (cascade)
+- [x] `ReminderList.java` 엔티티 (id, name, color, createdAt, updatedAt)
+- [x] `ReminderListRepository.java`
+- [x] `ReminderListService.java` — CRUD + 미완료 카운트 조회
+- [x] `ReminderListController.java` — `GET /api/lists` (카운트 포함)
+- [x] `ReminderListController.java` — `POST /api/lists`
+- [x] `ReminderListController.java` — `PUT /api/lists/{id}`
+- [x] `ReminderListController.java` — `DELETE /api/lists/{id}` (cascade)
 
 ### 4.2 Backend — Reminder-List 연관관계
-- [ ] `Reminder` 엔티티에 `@ManyToOne` `reminderList` 필드 추가
-- [ ] `ReminderController` — `GET /api/reminders?listId=` 필터 지원
-- [ ] `POST /api/reminders` 요청에 `listId` 필드 추가
+- [x] `Reminder` 엔티티에 `@ManyToOne` `reminderList` 필드 추가
+- [x] `ReminderController` — `GET /api/reminders?listId=` 필터 지원
+- [x] `POST /api/reminders` 요청에 `listId` 필드 추가
 
 ### 4.3 Frontend 타입 & API 확장
-- [ ] `types/index.ts` — `ReminderList` 타입 추가
-- [ ] `lib/api.ts` — `fetchLists()`, `createList()`, `updateList()`, `deleteList()` 함수
+- [x] `types/index.ts` — `ReminderList` 타입 추가
+- [x] `lib/api.ts` — `fetchLists()`, `createList()`, `updateList()`, `deleteList()` 함수
 
 ### 4.4 사이드바 — My Lists 섹션
-- [ ] `components/Sidebar.tsx` — My Lists 섹션 추가 (구분선 아래)
-- [ ] 리스트 행 — 색상 원(12px) + 이름 + 미완료 카운트
-- [ ] 리스트 클릭 → 해당 리스트의 리마인더만 메인 영역에 표시
-- [ ] 선택된 리스트 하이라이트 (`rgba(0,0,0,0.08)` 배경)
-- [ ] "+ Add List" 버튼 (사이드바 하단, 시스템 블루)
+- [x] `components/Sidebar.tsx` — My Lists 섹션 추가 (구분선 아래)
+- [x] 리스트 행 — 색상 원(12px) + 이름 + 미완료 카운트
+- [x] 리스트 클릭 → 해당 리스트의 리마인더만 메인 영역에 표시
+- [x] 선택된 리스트 하이라이트 (`rgba(0,0,0,0.08)` 배경)
+- [x] "+ Add List" 버튼 (사이드바 하단, 시스템 블루)
 
 ### 4.5 리스트 생성/편집 모달
-- [ ] `components/ListModal.tsx` — 모달 컨테이너 (360px, border-radius 14px, backdrop dimming)
-- [ ] 상단 아이콘 미리보기 — 선택한 색상의 원형 아이콘 (56px)
-- [ ] 이름 입력 필드 — 중앙 정렬, `#F2F2F7` 배경
-- [ ] 12색 원형 팔레트 — 3행 4열 그리드, 선택 시 체크마크 오버레이
-- [ ] Cancel / Done 버튼 — 시스템 블루 텍스트
-- [ ] 편집 모드 — 기존 리스트 데이터 로드
-- [ ] 삭제 기능 — 리스트 컨텍스트 메뉴 또는 편집 모달 내 삭제 버튼 + 확인 다이얼로그
+- [x] `components/ListModal.tsx` — 모달 컨테이너 (360px, border-radius 14px, backdrop dimming)
+- [x] 상단 아이콘 미리보기 — 선택한 색상의 원형 아이콘 (56px)
+- [x] 이름 입력 필드 — 중앙 정렬, `#F2F2F7` 배경
+- [x] 12색 원형 팔레트 — 3행 4열 그리드, 선택 시 체크마크 오버레이
+- [x] Cancel / Done 버튼 — 시스템 블루 텍스트
+- [x] 편집 모드 — 기존 리스트 데이터 로드
+- [x] 삭제 기능 — 리스트 컨텍스트 메뉴 또는 편집 모달 내 삭제 버튼 + 확인 다이얼로그
 
 ### 4.6 리마인더-리스트 연동
-- [ ] 리마인더 생성 시 현재 선택된 리스트에 자동 소속
-- [ ] 리마인더 상세 편집 — 소속 리스트 변경 드롭다운 (색상 원 표시)
-- [ ] 메인 영역 헤더 — 선택된 리스트 이름 + 테마 색상 적용
+- [x] 리마인더 생성 시 현재 선택된 리스트에 자동 소속
+- [x] 리마인더 상세 편집 — 소속 리스트 변경 드롭다운 (색상 원 표시)
+- [x] 메인 영역 헤더 — 선택된 리스트 이름 + 테마 색상 적용
 
 ---
 

@@ -18,12 +18,13 @@ public class ReminderController {
 
     @GetMapping
     public List<Reminder> findAll(
+            @RequestParam(required = false) Long listId,
             @RequestParam(required = false) Boolean completed,
             @RequestParam(required = false) Boolean flagged,
             @RequestParam(required = false) Boolean dueToday,
             @RequestParam(required = false) Boolean scheduled,
             @RequestParam(required = false) String sort) {
-        return reminderService.findAll(completed, flagged, dueToday, scheduled, sort);
+        return reminderService.findAll(listId, completed, flagged, dueToday, scheduled, sort);
     }
 
     @GetMapping("/{id}")
@@ -33,8 +34,10 @@ public class ReminderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reminder create(@RequestBody Map<String, String> body) {
-        return reminderService.create(body.get("title"));
+    public Reminder create(@RequestBody Map<String, Object> body) {
+        String title = (String) body.get("title");
+        Long listId = body.get("listId") != null ? ((Number) body.get("listId")).longValue() : null;
+        return reminderService.create(title, listId);
     }
 
     @PutMapping("/{id}")
