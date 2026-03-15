@@ -44,9 +44,12 @@ public class DefaultReminderListService implements ReminderListService {
     @Override
     @Transactional
     public ReminderList create(String name, String color) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("List name must not be empty");
+        }
         ReminderList list = new ReminderList();
         list.setName(name);
-        list.setColor(color);
+        list.setColor(color != null ? color : "BLUE");
         return reminderListRepository.save(list);
     }
 

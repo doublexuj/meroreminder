@@ -146,6 +146,26 @@ class ReminderListControllerTest {
                 .andExpect(jsonPath("$.listId").value(list.getId()));
     }
 
+    @Test
+    @Order(7)
+    @DisplayName("POST /api/lists — name 없이 생성 → 400")
+    void createListWithoutName() throws Exception {
+        mockMvc.perform(post("/api/lists")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"color\": \"BLUE\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("POST /api/lists — name이 빈 문자열 → 400")
+    void createListWithBlankName() throws Exception {
+        mockMvc.perform(post("/api/lists")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"   \", \"color\": \"BLUE\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
     private ReminderList createTestList(String name, String color) {
         ReminderList list = new ReminderList();
         list.setName(name);

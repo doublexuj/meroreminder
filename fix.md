@@ -14,9 +14,9 @@
 
 ### 보안
 
-- [ ] `application.properties` — H2 Console을 dev 프로파일에서만 활성화
-- [ ] 컨트롤러 입력 유효성 검증 추가 — 문자열 길이 제한, null 체크 등
-- [ ] `WebConfig` — `allowedHeaders("*")` 를 필요한 헤더만 허용하도록 변경
+- [x] `application.properties` — H2 Console을 dev 프로파일에서만 활성화
+- [x] 컨트롤러 입력 유효성 검증 추가 — 문자열 길이 제한, null 체크 등
+- [x] `WebConfig` — `allowedHeaders("*")` 를 필요한 헤더만 허용하도록 변경
 - [ ] 인증/인가 레이어 추가 (향후 과제)
 
 ### 성능
