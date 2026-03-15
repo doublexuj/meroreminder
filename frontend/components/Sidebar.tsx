@@ -157,8 +157,9 @@ export default function Sidebar({
                       className="fixed inset-0 z-40"
                       onClick={() => setContextMenuId(null)}
                     />
-                    <div className="absolute right-0 top-full z-50 bg-white rounded-lg shadow-lg border border-[var(--color-border)] py-1 min-w-[140px]">
+                    <div className="absolute right-0 top-full z-50 bg-white rounded-lg shadow-lg border border-[var(--color-border)] py-1 min-w-[140px]" role="menu">
                       <button
+                        role="menuitem"
                         onClick={() => {
                           setContextMenuId(null);
                           onEditList(list);
@@ -169,6 +170,7 @@ export default function Sidebar({
                         Edit List
                       </button>
                       <button
+                        role="menuitem"
                         onClick={() => {
                           setContextMenuId(null);
                           onDeleteList(list.id);

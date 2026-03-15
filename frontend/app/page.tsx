@@ -104,6 +104,15 @@ export default function Home() {
 
   const isCompletedView = selection.kind === "smart" && selection.smartListType === "completed";
 
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSidebarOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [sidebarOpen]);
+
   const todayDate = useMemo(
     () =>
       new Date().toLocaleDateString("ko-KR", {
@@ -151,6 +160,7 @@ export default function Home() {
               {/* Mobile hamburger */}
               <button
                 onClick={() => setSidebarOpen(true)}
+                aria-label="메뉴 열기"
                 className="lg:hidden p-1 -ml-1 text-[var(--color-system-blue)]"
               >
                 <Menu size={24} />

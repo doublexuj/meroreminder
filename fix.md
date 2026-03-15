@@ -62,14 +62,14 @@
 
 ### 접근성 (A11y)
 
-- [ ] `ListModal.tsx` — 포커스 트랩 추가, `role="dialog"`, `aria-modal="true"` 설정
-- [ ] `ReminderItem.tsx` — 체크 버튼에 `aria-label` 추가 ("완료로 표시" / "미완료로 표시")
-- [ ] `page.tsx` — 햄버거 메뉴 버튼에 `aria-label="메뉴 열기"` 추가
-- [ ] `ListModal.tsx` — 색상 팔레트 버튼에 `aria-label={색상이름}` 추가
-- [ ] `Sidebar.tsx` — 컨텍스트 메뉴에 `role="menu"`, 항목에 `role="menuitem"` 추가
-- [ ] `ReminderDetail.tsx` — 폼 입력에 `<label>` 요소 추가
-- [ ] `Toast.tsx` — `role="alert"` 또는 `aria-live="polite"` 추가
-- [ ] 사이드바 오버레이 — `Escape` 키로 닫기 지원
+- [x] `ListModal.tsx` — 포커스 트랩 추가, `role="dialog"`, `aria-modal="true"` 설정
+- [x] `ReminderItem.tsx` — 체크 버튼에 `aria-label` 추가 ("완료로 표시" / "미완료로 표시")
+- [x] `page.tsx` — 햄버거 메뉴 버튼에 `aria-label="메뉴 열기"` 추가
+- [x] `ListModal.tsx` — 색상 팔레트 버튼에 `aria-label={색상이름}` 추가
+- [x] `Sidebar.tsx` — 컨텍스트 메뉴에 `role="menu"`, 항목에 `role="menuitem"` 추가
+- [x] `ReminderDetail.tsx` — 폼 입력에 `<label>` 요소 추가
+- [x] `Toast.tsx` — `role="alert"` 또는 `aria-live="polite"` 추가
+- [x] 사이드바 오버레이 — `Escape` 키로 닫기 지원
 
 ### 성능
 

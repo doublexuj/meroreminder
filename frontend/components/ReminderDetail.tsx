@@ -51,7 +51,9 @@ export default function ReminderDetail({
   return (
     <div className="px-4 pl-[52px] pb-4 flex flex-col gap-3">
       {/* Title */}
+      <label className="sr-only" htmlFor={`title-${reminder.id}`}>Title</label>
       <input
+        id={`title-${reminder.id}`}
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -64,7 +66,9 @@ export default function ReminderDetail({
       />
 
       {/* Memo */}
+      <label className="sr-only" htmlFor={`memo-${reminder.id}`}>Note</label>
       <textarea
+        id={`memo-${reminder.id}`}
         value={memo}
         onChange={(e) => setMemo(e.target.value)}
         onBlur={() => {
@@ -79,7 +83,9 @@ export default function ReminderDetail({
 
       {/* Date & Time */}
       <div className="flex gap-2">
+        <label className="sr-only" htmlFor={`date-${reminder.id}`}>Due Date</label>
         <input
+          id={`date-${reminder.id}`}
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
@@ -90,7 +96,9 @@ export default function ReminderDetail({
           }}
           className="text-[13px] bg-[var(--color-bg-input)] rounded-lg px-3 py-1.5 outline-none"
         />
+        <label className="sr-only" htmlFor={`time-${reminder.id}`}>Due Time</label>
         <input
+          id={`time-${reminder.id}`}
           type="time"
           value={dueTime}
           onChange={(e) => setDueTime(e.target.value)}
@@ -126,8 +134,9 @@ export default function ReminderDetail({
       {/* List Selection */}
       {lists.length > 0 && (
         <div className="flex items-center gap-2">
-          <span className="text-[13px] text-[var(--color-text-secondary)]">List:</span>
+          <label htmlFor={`list-${reminder.id}`} className="text-[13px] text-[var(--color-text-secondary)]">List:</label>
           <select
+            id={`list-${reminder.id}`}
             value={currentListId ?? ""}
             onChange={(e) => {
               const val = e.target.value;

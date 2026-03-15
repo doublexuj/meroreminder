@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { List, Check } from "lucide-react";
 import { COLORS } from "@/lib/colors";
 
@@ -19,12 +19,39 @@ export default function ListModal({
 }: ListModalProps) {
   const [name, setName] = useState(initialName);
   const [color, setColor] = useState(initialColor);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onCancel();
+        return;
+      }
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, input, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onCancel]);
 
   const selectedHex =
     COLORS.find((c) => c.name === color)?.hex ?? "#007AFF";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center" role="dialog" aria-modal="true" ref={dialogRef}>
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/30"
@@ -57,6 +84,7 @@ export default function ListModal({
             <button
               key={c.name}
               onClick={() => setColor(c.name)}
+              aria-label={c.name}
               className="w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110"
               style={{ backgroundColor: c.hex }}
             >

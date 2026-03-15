@@ -68,6 +68,7 @@ export default function ReminderItem({
       {/* Check Circle */}
       <button
         onClick={handleToggle}
+        aria-label={reminder.completed ? "미완료로 표시" : "완료로 표시"}
         className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all duration-300 mt-0.5 ${
           reminder.completed
             ? "border-[var(--color-system-blue)] bg-[var(--color-system-blue)]"
