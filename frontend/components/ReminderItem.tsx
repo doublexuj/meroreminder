@@ -2,7 +2,7 @@
 
 import { Reminder } from "@/types";
 import { Flag } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 
 interface ReminderItemProps {
   reminder: Reminder;
@@ -18,7 +18,7 @@ const PRIORITY_LABELS: Record<string, string> = {
   HIGH: "!!!",
 };
 
-export default function ReminderItem({
+export default memo(function ReminderItem({
   reminder,
   isSelected,
   animatingOut,
@@ -129,4 +129,4 @@ export default function ReminderItem({
       )}
     </div>
   );
-}
+})

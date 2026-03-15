@@ -1,13 +1,13 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 
 interface AddReminderProps {
   onAdd: (title: string) => void;
 }
 
-export default function AddReminder({ onAdd }: AddReminderProps) {
+export default memo(function AddReminder({ onAdd }: AddReminderProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -63,4 +63,4 @@ export default function AddReminder({ onAdd }: AddReminderProps) {
       <span>Add Reminder</span>
     </button>
   );
-}
+})

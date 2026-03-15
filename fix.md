@@ -73,8 +73,8 @@
 
 ### 성능
 
-- [ ] 핸들러 함수 안정화 (`useCallback`) + 자식 컴포넌트에 `React.memo` 적용
-- [ ] `todayDate` — `useMemo`로 불필요한 재계산 방지
+- [x] 핸들러 함수 안정화 (`useCallback`) + 자식 컴포넌트에 `React.memo` 적용
+- [x] `todayDate` — `useMemo`로 불필요한 재계산 방지
 
 ### CSS/테마
 

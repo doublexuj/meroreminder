@@ -59,28 +59,33 @@ export default function Home() {
     init();
   }, [loadLists, loadSummary, loadReminders]);
 
-  const handleSelectSmartList = (type: SmartListType) => {
+  const handleSelectSmartList = useCallback((type: SmartListType) => {
     setSelection({ kind: "smart", smartListType: type });
     setSelectedId(null);
     setContentKey((k) => k + 1);
     setSidebarOpen(false);
-  };
+  }, [setSelectedId]);
 
-  const handleSelectList = (id: number) => {
+  const handleSelectList = useCallback((id: number) => {
     setSelection({ kind: "custom", listId: id });
     setSelectedId(null);
     setContentKey((k) => k + 1);
     setSidebarOpen(false);
-  };
+  }, [setSelectedId]);
 
-  const onDeleteList = async (id: number) => {
+  const onToggle = useCallback((id: number) => handleToggle(id, refreshAll), [handleToggle, refreshAll]);
+  const onUpdate = useCallback((id: number, data: Partial<Reminder>) => handleUpdate(id, data, refreshAll), [handleUpdate, refreshAll]);
+  const onDelete = useCallback((id: number) => handleDelete(id, refreshAll), [handleDelete, refreshAll]);
+  const onAdd = useCallback((title: string) => handleAdd(title, refreshAll), [handleAdd, refreshAll]);
+
+  const onDeleteList = useCallback(async (id: number) => {
     await handleDeleteList(id, (deletedId) => {
       if (selection.kind === "custom" && selection.listId === deletedId) {
         handleSelectSmartList("all");
       }
     });
     await loadReminders();
-  };
+  }, [handleDeleteList, selection, handleSelectSmartList, loadReminders]);
 
   // Header config
   const selectedListId = selection.kind === "custom" ? selection.listId : null;
@@ -194,10 +199,10 @@ export default function Home() {
                   emptyMessage={emptyMessage}
                   animatingOutId={animatingOutId}
                   deletingId={deletingId}
-                  onToggle={(id) => handleToggle(id, refreshAll)}
+                  onToggle={onToggle}
                   onSelect={handleSelect}
-                  onUpdate={(id, data) => handleUpdate(id, data, refreshAll)}
-                  onDelete={(id) => handleDelete(id, refreshAll)}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
                 />
               </div>
             )}
@@ -206,7 +211,7 @@ export default function Home() {
           {/* Add Reminder — hide for Completed smart list */}
           {!isCompletedView && (
             <div className="border-t border-[var(--color-border)]">
-              <AddReminder onAdd={(title) => handleAdd(title, refreshAll)} />
+              <AddReminder onAdd={onAdd} />
             </div>
           )}
         </main>
