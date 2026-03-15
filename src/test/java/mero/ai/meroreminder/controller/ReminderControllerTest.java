@@ -223,6 +223,48 @@ class ReminderControllerTest {
                 .andExpect(jsonPath("$.completed").value(1));
     }
 
+    @Test
+    @Order(13)
+    @DisplayName("PUT /api/reminders/{id} — 잘못된 priority 값 → 400")
+    void updateWithInvalidPriority() throws Exception {
+        Reminder saved = createTestReminder("테스트");
+
+        mockMvc.perform(put("/api/reminders/{id}", saved.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"priority\": \"URGENT\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("PUT /api/reminders/{id} — 잘못된 날짜 형식 → 400")
+    void updateWithInvalidDate() throws Exception {
+        Reminder saved = createTestReminder("테스트");
+
+        mockMvc.perform(put("/api/reminders/{id}", saved.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"dueDate\": \"not-a-date\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("POST /api/reminders — title 없이 생성 → 400")
+    void createWithoutTitle() throws Exception {
+        mockMvc.perform(post("/api/reminders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"memo\": \"메모만\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("GET /api/reminders/{id} — 존재하지 않는 ID → 404")
+    void findByIdNotFound() throws Exception {
+        mockMvc.perform(get("/api/reminders/{id}", 99999))
+                .andExpect(status().isNotFound());
+    }
+
     private Reminder createTestReminder(String title) {
         Reminder reminder = new Reminder();
         reminder.setTitle(title);

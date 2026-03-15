@@ -67,6 +67,9 @@ public class DefaultReminderService implements ReminderService {
     @Override
     @Transactional
     public Reminder create(String title, Long listId) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Title must not be empty");
+        }
         Reminder reminder = new Reminder();
         reminder.setTitle(title);
         if (listId != null) {

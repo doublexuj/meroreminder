@@ -2,6 +2,7 @@ package mero.ai.meroreminder.repository;
 
 import mero.ai.meroreminder.domain.Reminder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,5 +31,6 @@ public interface ReminderRepository extends JpaRepository<Reminder, Long> {
 
     long countByReminderListIdAndCompleted(Long listId, boolean completed);
 
+    @Modifying
     void deleteByReminderListId(Long listId);
 }
