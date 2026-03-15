@@ -81,7 +81,7 @@ export default function Sidebar({
     COLORS.find((c) => c.name === colorName)?.hex ?? "#8E8E93";
 
   return (
-    <aside className="w-[280px] min-h-screen flex flex-col border-r border-[var(--color-border-strong)] bg-[var(--color-bg-sidebar)] backdrop-blur-[20px]">
+    <aside className="w-[280px] h-screen flex flex-col border-r border-[var(--color-border-strong)] bg-[var(--color-bg-sidebar)] backdrop-blur-[20px] overflow-y-auto">
       <div className="p-4 pt-6">
         {/* Smart Lists */}
         <div className="grid grid-cols-2 gap-2">

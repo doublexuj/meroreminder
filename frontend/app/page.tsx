@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Reminder, ReminderListItem, Summary } from "@/types";
 import {
   fetchReminders,
@@ -18,7 +18,9 @@ import Sidebar from "@/components/Sidebar";
 import ReminderList from "@/components/ReminderList";
 import AddReminder from "@/components/AddReminder";
 import ListModal from "@/components/ListModal";
+import Toast from "@/components/Toast";
 import { COLORS } from "@/components/ListModal";
+import { Menu } from "lucide-react";
 
 export type SmartListType = "all" | "today" | "scheduled" | "flagged" | "completed";
 
@@ -55,13 +57,22 @@ export default function Home() {
   const [isSmartListSelected, setIsSmartListSelected] = useState(true);
   const [showListModal, setShowListModal] = useState(false);
   const [editingList, setEditingList] = useState<ReminderListItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [animatingOutId, setAnimatingOutId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [contentKey, setContentKey] = useState(0);
+  const initialLoadRef = useRef(true);
+
+  const showError = (msg: string) => setToastMessage(msg);
 
   const loadSummary = useCallback(async () => {
     try {
       const data = await fetchSummary();
       setSummary(data);
-    } catch (error) {
-      console.error("Failed to fetch summary:", error);
+    } catch {
+      showError("Failed to load summary");
     }
   }, []);
 
@@ -69,8 +80,8 @@ export default function Home() {
     try {
       const data = await fetchLists();
       setLists(data);
-    } catch (error) {
-      console.error("Failed to fetch lists:", error);
+    } catch {
+      showError("Failed to load lists");
     }
   }, []);
 
@@ -84,19 +95,20 @@ export default function Home() {
       }
       const data = await fetchReminders(params);
       setReminders(data);
-    } catch (error) {
-      console.error("Failed to fetch reminders:", error);
+    } catch {
+      showError("Failed to load reminders");
     }
   }, [selectedListId, isSmartListSelected, smartListType]);
 
   useEffect(() => {
-    loadLists();
-    loadSummary();
-  }, [loadLists, loadSummary]);
-
-  useEffect(() => {
-    loadReminders();
-  }, [loadReminders]);
+    const init = async () => {
+      setLoading(true);
+      await Promise.all([loadLists(), loadSummary(), loadReminders()]);
+      setLoading(false);
+      initialLoadRef.current = false;
+    };
+    init();
+  }, [loadLists, loadSummary, loadReminders]);
 
   const refreshAll = async () => {
     await Promise.all([loadReminders(), loadLists(), loadSummary()]);
@@ -106,17 +118,42 @@ export default function Home() {
     try {
       await createReminder(title, isSmartListSelected ? null : selectedListId);
       await refreshAll();
-    } catch (error) {
-      console.error("Failed to create reminder:", error);
+    } catch {
+      showError("Failed to create reminder");
     }
   };
 
   const handleToggle = async (id: number) => {
+    // Optimistic update
+    const original = reminders;
+    const target = reminders.find((r) => r.id === id);
+    if (!target) return;
+
+    const wasCompleted = target.completed;
+    setReminders((prev) =>
+      prev.map((r) =>
+        r.id === id ? { ...r, completed: !r.completed } : r
+      )
+    );
+
+    // Animate out after 0.5s delay if completing (and not viewing "completed" list)
+    if (!wasCompleted && smartListType !== "completed") {
+      setAnimatingOutId(id);
+      setTimeout(() => {
+        setAnimatingOutId(null);
+      }, 800);
+    }
+
     try {
       await toggleReminder(id);
-      await refreshAll();
-    } catch (error) {
-      console.error("Failed to toggle reminder:", error);
+      // Delay refresh to let animation play
+      setTimeout(async () => {
+        await refreshAll();
+      }, wasCompleted ? 0 : 600);
+    } catch {
+      setReminders(original);
+      setAnimatingOutId(null);
+      showError("Failed to toggle reminder");
     }
   };
 
@@ -124,19 +161,29 @@ export default function Home() {
     try {
       await updateReminder(id, data);
       await refreshAll();
-    } catch (error) {
-      console.error("Failed to update reminder:", error);
+    } catch {
+      showError("Failed to update reminder");
     }
   };
 
   const handleDelete = async (id: number) => {
-    try {
-      await deleteReminder(id);
+    // Optimistic: animate out then remove
+    setDeletingId(id);
+    const original = reminders;
+
+    setTimeout(async () => {
+      setReminders((prev) => prev.filter((r) => r.id !== id));
       setSelectedId(null);
-      await refreshAll();
-    } catch (error) {
-      console.error("Failed to delete reminder:", error);
-    }
+      setDeletingId(null);
+
+      try {
+        await deleteReminder(id);
+        await refreshAll();
+      } catch {
+        setReminders(original);
+        showError("Failed to delete reminder");
+      }
+    }, 300);
   };
 
   const handleSelect = (id: number) => {
@@ -148,12 +195,16 @@ export default function Home() {
     setSelectedListId(null);
     setIsSmartListSelected(true);
     setSelectedId(null);
+    setContentKey((k) => k + 1);
+    setSidebarOpen(false);
   };
 
   const handleSelectList = (id: number) => {
     setSelectedListId(id);
     setIsSmartListSelected(false);
     setSelectedId(null);
+    setContentKey((k) => k + 1);
+    setSidebarOpen(false);
   };
 
   const handleAddList = () => {
@@ -176,8 +227,8 @@ export default function Home() {
       setShowListModal(false);
       setEditingList(null);
       await loadLists();
-    } catch (error) {
-      console.error("Failed to save list:", error);
+    } catch {
+      showError("Failed to save list");
     }
   };
 
@@ -188,8 +239,8 @@ export default function Home() {
         handleSelectSmartList("all");
       }
       await refreshAll();
-    } catch (error) {
-      console.error("Failed to delete list:", error);
+    } catch {
+      showError("Failed to delete list");
     }
   };
 
@@ -210,7 +261,6 @@ export default function Home() {
     emptyMessage = "No Reminders";
   }
 
-  // Today date string for Today header
   const todayDate = new Date().toLocaleDateString("ko-KR", {
     month: "long",
     day: "numeric",
@@ -219,46 +269,80 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar
-        summary={summary}
-        lists={lists}
-        selectedListId={selectedListId}
-        selectedSmartList={isSmartListSelected ? smartListType : null}
-        onSelectSmartList={handleSelectSmartList}
-        onSelectList={handleSelectList}
-        onAddList={handleAddList}
-        onEditList={handleEditList}
-        onDeleteList={handleDeleteList}
-      />
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      <main className="flex-1 flex flex-col">
+      {/* Sidebar */}
+      <div
+        className={`fixed lg:static z-50 lg:z-auto transition-transform duration-300 lg:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <Sidebar
+          summary={summary}
+          lists={lists}
+          selectedListId={selectedListId}
+          selectedSmartList={isSmartListSelected ? smartListType : null}
+          onSelectSmartList={handleSelectSmartList}
+          onSelectList={handleSelectList}
+          onAddList={handleAddList}
+          onEditList={handleEditList}
+          onDeleteList={handleDeleteList}
+        />
+      </div>
+
+      <main className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="px-6 pt-8 pb-2 flex items-baseline justify-between">
-          <h1
-            className="text-[28px] font-bold"
-            style={{ color: headerColor }}
-          >
-            {headerTitle}
-          </h1>
+        <div className="px-4 sm:px-6 pt-6 sm:pt-8 pb-2 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-1 -ml-1 text-[var(--color-system-blue)]"
+            >
+              <Menu size={24} />
+            </button>
+            <h1
+              className="text-[24px] sm:text-[28px] font-bold"
+              style={{ color: headerColor }}
+            >
+              {headerTitle}
+            </h1>
+          </div>
           {isSmartListSelected && smartListType === "today" && (
-            <span className="text-[15px] text-[var(--color-text-secondary)]">
+            <span className="text-[13px] sm:text-[15px] text-[var(--color-text-secondary)]">
               {todayDate}
             </span>
           )}
         </div>
 
-        {/* Reminder List */}
-        <div className="flex-1 flex flex-col">
-          <ReminderList
-            reminders={reminders}
-            selectedId={selectedId}
-            lists={lists}
-            emptyMessage={emptyMessage}
-            onToggle={handleToggle}
-            onSelect={handleSelect}
-            onUpdate={handleUpdate}
-            onDelete={handleDelete}
-          />
+        {/* Content area with transition */}
+        <div className="flex-1 flex flex-col" key={contentKey}>
+          {loading && initialLoadRef.current ? (
+            <div className="flex-1 flex items-center justify-center">
+              <div className="spinner" />
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col fade-slide-in">
+              <ReminderList
+                reminders={reminders}
+                selectedId={selectedId}
+                lists={lists}
+                emptyMessage={emptyMessage}
+                animatingOutId={animatingOutId}
+                deletingId={deletingId}
+                onToggle={handleToggle}
+                onSelect={handleSelect}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+              />
+            </div>
+          )}
         </div>
 
         {/* Add Reminder — hide for Completed smart list */}
@@ -280,6 +364,11 @@ export default function Home() {
             setEditingList(null);
           }}
         />
+      )}
+
+      {/* Toast */}
+      {toastMessage && (
+        <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
       )}
     </div>
   );

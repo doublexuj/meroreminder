@@ -2,10 +2,12 @@
 
 import { Reminder } from "@/types";
 import { Flag } from "lucide-react";
+import { useState } from "react";
 
 interface ReminderItemProps {
   reminder: Reminder;
   isSelected: boolean;
+  animatingOut?: boolean;
   onToggle: (id: number) => void;
   onSelect: (id: number) => void;
 }
@@ -19,9 +21,11 @@ const PRIORITY_LABELS: Record<string, string> = {
 export default function ReminderItem({
   reminder,
   isSelected,
+  animatingOut,
   onToggle,
   onSelect,
 }: ReminderItemProps) {
+  const [justChecked, setJustChecked] = useState(false);
   const priorityLabel = PRIORITY_LABELS[reminder.priority];
 
   const subInfo: string[] = [];
@@ -36,19 +40,26 @@ export default function ReminderItem({
     subInfo.push(dateStr);
   }
 
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!reminder.completed) {
+      setJustChecked(true);
+    }
+    onToggle(reminder.id);
+  };
+
   return (
     <div
       className={`flex items-start min-h-[44px] px-4 py-2 cursor-pointer transition-colors duration-150 ${
+        animatingOut ? "slide-out-collapse" : ""
+      } ${
         isSelected ? "bg-[var(--color-bg-selected)]" : "hover:bg-[var(--color-bg-hover)]"
       }`}
       onClick={() => onSelect(reminder.id)}
     >
       {/* Check Circle */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggle(reminder.id);
-        }}
+        onClick={handleToggle}
         className={`w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all duration-300 mt-0.5 ${
           reminder.completed
             ? "border-[var(--color-system-blue)] bg-[var(--color-system-blue)]"
@@ -56,7 +67,13 @@ export default function ReminderItem({
         }`}
       >
         {reminder.completed && (
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            className={justChecked ? "check-animate" : ""}
+          >
             <path
               d="M2 6L5 9L10 3"
               stroke="white"
@@ -77,7 +94,7 @@ export default function ReminderItem({
             </span>
           )}
           <span
-            className={`text-base leading-tight ${
+            className={`text-base leading-tight transition-all duration-300 ${
               reminder.completed
                 ? "line-through text-[var(--color-text-secondary)]"
                 : "text-[var(--color-text-primary)]"
